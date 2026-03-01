@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: strapi-postgres-standalone
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+      POSTGRES_DB: strapi
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - strapi_network
+
+  strapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-strapi-standalone
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi
+      DATABASE_SSL: false
+      JWT_SECRET: changeme-jwt-secret-key
+      ADMIN_JWT_SECRET: changeme-admin-jwt-secret
+      APP_KEYS: changeme-app-keys
+      API_TOKEN_SALT: changeme-api-token-salt
+    volumes:
+      - .:/opt/app
+      - strapi_node_modules:/opt/app/node_modules
+      - ./public/uploads:/opt/app/public/uploads
+    ports:
+      - "1337:1337"
+    networks:
+      - strapi_network
+    depends_on:
+      - postgres
+    command: npm run develop
+
+networks:
+  strapi_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  strapi_node_modules:

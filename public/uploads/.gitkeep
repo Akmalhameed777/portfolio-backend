@@ -1,0 +1,5 @@
+# This directory stores uploaded media files from Strapi
+
+To preserve this directory in git, this .gitkeep file is included.
+
+Media files uploaded through Strapi will be stored here.
