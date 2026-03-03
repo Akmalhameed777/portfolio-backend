@@ -15,11 +15,13 @@ module.exports = {
       const permissionsToSet = [
         { action: 'api::project.project.find' },
         { action: 'api::project.project.findOne' },
+        { action: 'api::project.project.create' },
         { action: 'api::blog-post.blog-post.find' },
         { action: 'api::blog-post.blog-post.findOne' },
+        { action: 'api::blog-post.blog-post.create' },
         { action: 'api::about.about.find' },
         { action: 'api::contact-message.contact-message.create' },
-      ];
+];
 
       for (const perm of permissionsToSet) {
         const existing = await strapi
